@@ -1,0 +1,4 @@
+body { font-family: Arial, sans-serif; text-align: center; }
+table { width: 50%; margin: 20px auto; border-collapse: collapse; }
+th, td { border: 1px solid black; padding: 10px; }
+input, button { margin: 5px; padding: 8px; }
