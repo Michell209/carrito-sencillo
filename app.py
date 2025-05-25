@@ -1,17 +1,21 @@
 from flask import Flask, render_template, request, redirect
 import mysql.connector
 import os
+from urllib.parse import urlparse
 
 app = Flask(__name__)
 
-# Conexión con base de datos MySQL en Railway (usando variables de entorno)
+# ✅ Conexión con base de datos usando solo MYSQL_URL (Railway)
 def get_db_connection():
+    db_url = os.getenv("MYSQL_URL")
+    result = urlparse(db_url)
+
     return mysql.connector.connect(
-        host=os.getenv("MYSQLHOST"),
-        user=os.getenv("MYSQLUSER"),
-        password=os.getenv("MYSQLPASSWORD"),
-        database=os.getenv("MYSQLDATABASE"),
-        port=int(os.getenv("MYSQLPORT", 3306))
+        host=result.hostname,
+        user=result.username,
+        password=result.password,
+        database=result.path.lstrip('/'),
+        port=result.port
     )
 
 @app.route("/")
@@ -37,3 +41,4 @@ def agregar():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
